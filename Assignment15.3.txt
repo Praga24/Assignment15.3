@@ -1,0 +1,60 @@
+1.Explain the working of SQOOP in brief.
+
+Sqoop - "SQL-to-Hadoop" is a straightforward command-line tool with the following capabilities:
+
+Imports individual tables or entire databases to files in HDFS.
+Generates Java classes to allow us to interact with our imported data.
+Provides the ability to import from SQL databases straight into our Hive data warehouse.
+
+Sqoop Import:
+The import tool imports individual tables from RDBMS to HDFS.
+Each row in a table is treated as a record in HDFS. 
+All records are stored as text data in text files or as binary data in Avro and Sequence files.
+
+Sqoop Export:
+The export tool exports a set of files from HDFS back to an RDBMS. The target table
+must exist in the database.
+The input files are read and parsed into a set of records according to the user-specified
+delimiters.
+By default, Sqoop will use four tasks in parallel for the export process.
+
+
+2.Import a table from Mysql to HBase table using Sqoop.
+
+--Enter mysql shell
+
+mysql -u root -p
+
+--Database Creation
+mysql>CREATE DATABASE Assignment;
+
+mysql> USE Assignment;
+
+--Table Creation
+mysql> CREATE TABLE STUDENT(id INT,name VARCHAR(50));
+
+--Inserting Values
+mysql> INSERT INTO STUDENT VALUES(1,'A'),(2,'B'),(3,'C');
+
+--Enter Hbase shell
+
+hbase shell
+
+--Create table
+
+create 'Student','stu_details'
+
+--Scan table
+
+scan 'Student'
+
+--Sqoop import
+
+sqoop import --connect jdbc:mysql://localhost:3306/Assignment --username root --password cloudera --table STUDENT 
+--hbase-table Student --column-family id --hbase-row-key id -m 1
+
+--Scan table
+
+scan 'Student'
+
+
